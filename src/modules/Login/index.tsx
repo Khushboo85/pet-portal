@@ -1,8 +1,12 @@
+import { Box, Button, Container, Grid, TextField } from "@material-ui/core";
 import React, { useState } from "react";
-import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useHistory } from "react-router-dom";
+import { RootState } from '../../reducer';
 const Login = () => {
   const [email, setEmail] = useState("");
   const [passWord, setPassword] = useState("");
+  const loginState = useSelector((state:RootState)=>state.loginState)
   const history = useHistory();
   const handleChange = (e: any) => {
     console.log(e.target);
@@ -18,28 +22,47 @@ const Login = () => {
     }
   };
   const handleSubmit = (e: any) => {
-      console.log('here');
-      
+    console.log("here");
+
     e.preventDefault();
     history.push("/welcome");
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="email"
-        onChange={handleChange}
-        value={email}
-      ></input>
-      <input
-        type="password"
-        name="password"
-        onChange={handleChange}
-        value={passWord}
-      ></input>
+    <Container>
+      <Grid>
+        <Box>
+          <form onSubmit={handleSubmit}>
+            <Box>
+              <TextField
+                type="text"
+                name="email"
+                onChange={handleChange}
+                value={email}
+                variant="outlined"
+                label="Email"
+                fullWidth
+              />
 
-      <input type="submit" value="Submit"></input>
-    </form>
+              <TextField
+                type="password"
+                name="password"
+                onChange={handleChange}
+                value={passWord}
+                variant="outlined"
+                label="Password"
+                fullWidth
+              />
+            </Box>
+
+            <Box>
+              <Button type="submit" variant="contained" color="primary" fullWidth>
+                Submit
+              </Button>
+            </Box>
+          </form>
+        </Box>
+      </Grid>
+    </Container>
   );
 };
 

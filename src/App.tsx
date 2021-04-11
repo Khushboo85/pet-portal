@@ -1,11 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import App from './modules/App';
+import React from "react";
+import { Provider } from "react-redux";
+import "./App.css";
+import App from "./modules/App";
+import store from "./store";
 
 function AppRoot() {
   return (
-    <App/>
+    <Provider store={store}>
+      <App />
+    </Provider>
   );
 }
 
