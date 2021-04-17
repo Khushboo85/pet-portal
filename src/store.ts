@@ -2,7 +2,7 @@ import { applyMiddleware, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
 import reducer from "./reducer";
-import loginSaga from "./modules/Login/sagas";
+import loginSaga from "./modules/SignIn/sagas";
 function* sagas() {
   yield all([loginSaga()]);
 }
