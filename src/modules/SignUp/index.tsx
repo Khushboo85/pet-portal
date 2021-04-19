@@ -10,7 +10,9 @@ import Link from "@material-ui/core/Link";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
+import fire from "../../firebase";
 import useStyles from "./styles";
 
 function Copyright() {
@@ -28,10 +30,36 @@ function Copyright() {
 
 const SignUp = () => {
   const classes = useStyles();
+  const history = useHistory();
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    console.log(event);
+    fire
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((resp: any) => {
+        fire
+          .database()
+          .ref()
+          .child("user")
+          .push({
+            firstName,
+            lastName,
+            email,
+            password,
+          })
+          .then((resp) => {
+            history.push("/Dashboard");
+          });
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
   };
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -54,6 +82,10 @@ const SignUp = () => {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                value={firstName}
+                onChange={(event: any) => {
+                  setFirstName(event.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -65,6 +97,10 @@ const SignUp = () => {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                value={lastName}
+                onChange={(event: any) => {
+                  setLastName(event.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -76,6 +112,10 @@ const SignUp = () => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={email}
+                onChange={(event: any) => {
+                  setEmail(event.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -88,6 +128,10 @@ const SignUp = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(event: any) => {
+                  setPassword(event.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -108,7 +152,7 @@ const SignUp = () => {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/SignIn" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
