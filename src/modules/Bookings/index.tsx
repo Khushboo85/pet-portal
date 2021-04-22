@@ -16,63 +16,60 @@ import fire from "../../firebase";
 import useStyles from "./styles";
 
 
-const SignUp = () => {
+const Booking = () => {
   const classes = useStyles();
   const history = useHistory();
   const handleSubmit = (event: any) => {
     event.preventDefault();
     fire
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((resp: any) => {
-        fire
           .database()
           .ref()
-          .child("user")
+          .child("booking")
           .push({
-            firstName,
-            lastName,
-            email,
-            password,
+            arrival,
+            departure,
+            clientNotes,
+            status,
+            fee,
+            receipt
           })
           .then((resp) => {
             history.push("/Dashboard");
           });
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
   };
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [arrival, setArrival] = useState("");
+  const [departure, setDeparture] = useState("");
+  const [clientNotes, setClientNotes] = useState("");
+  const [status, setStatus] = useState("");
+  const [fee, setFee] = useState("");
+  const [receipt, setReceipt] = useState("");
+
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
+        {/* <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
-        </Avatar>
+        </Avatar> */}
         <Typography component="h1" variant="h5">
-          Sign up
+          Booking Details
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                autoComplete="arrival"
+                name="arrival"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="arrival"
+                label="Arrival Date"
                 autoFocus
-                value={firstName}
+                value={arrival}
                 onChange={(event: any) => {
-                  setFirstName(event.target.value);
+                  setArrival(event.target.value);
                 }}
               />
             </Grid>
@@ -81,13 +78,28 @@ const SignUp = () => {
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                value={lastName}
+                id="departure"
+                label="Departure Date"
+                name="departure"
+                autoComplete="departure"
+                value={departure}
                 onChange={(event: any) => {
-                  setLastName(event.target.value);
+                  setDeparture(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="clientNotes"
+                label="Client Notes"
+                name="clientNotes"
+                autoComplete="clientNotes"
+                value={clientNotes}
+                onChange={(event: any) => {
+                  setClientNotes(event.target.value);
                 }}
               />
             </Grid>
@@ -96,13 +108,13 @@ const SignUp = () => {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={email}
+                name="status"
+                label="Status"
+                id="status"
+                autoComplete="status"
+                value={status}
                 onChange={(event: any) => {
-                  setEmail(event.target.value);
+                  setStatus(event.target.value);
                 }}
               />
             </Grid>
@@ -111,14 +123,28 @@ const SignUp = () => {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={password}
+                name="fee"
+                label="Fee"
+                id="fee"
+                autoComplete="fee"
+                value={fee}
                 onChange={(event: any) => {
-                  setPassword(event.target.value);
+                  setFee(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="receipt"
+                label="Receipt"
+                id="receipt"
+                autoComplete="receipt"
+                value={receipt}
+                onChange={(event: any) => {
+                  setReceipt(event.target.value);
                 }}
               />
             </Grid>
@@ -130,18 +156,11 @@ const SignUp = () => {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Save Details
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/SignIn" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>
   );
 };
-export default SignUp;
+export default Booking;

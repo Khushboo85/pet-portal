@@ -16,63 +16,56 @@ import fire from "../../firebase";
 import useStyles from "./styles";
 
 
-const SignUp = () => {
+const Pet = () => {
   const classes = useStyles();
   const history = useHistory();
   const handleSubmit = (event: any) => {
     event.preventDefault();
     fire
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((resp: any) => {
-        fire
           .database()
           .ref()
-          .child("user")
+          .child("pet")
           .push({
-            firstName,
-            lastName,
-            email,
-            password,
+            petName,
+            breed,
+            type,
+            petSize,
+            
           })
           .then((resp) => {
             history.push("/Dashboard");
           });
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
   };
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [petName, setPetName] = useState("");
+  const [breed, setBreed] = useState("");
+  const [type, setType] = useState("");
+  const [petSize, setPetSize] = useState("");
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
+        {/* <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
-        </Avatar>
+        </Avatar> */}
         <Typography component="h1" variant="h5">
-          Sign up
+          Pet Details
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="petName"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="petName"
+                label="Pet Name"
                 autoFocus
-                value={firstName}
+                value={petName}
                 onChange={(event: any) => {
-                  setFirstName(event.target.value);
+                  setPetName(event.target.value);
                 }}
               />
             </Grid>
@@ -81,13 +74,28 @@ const SignUp = () => {
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                value={lastName}
+                id="breed"
+                label="Breed"
+                name="breed"
+                autoComplete="breed"
+                value={breed}
                 onChange={(event: any) => {
-                  setLastName(event.target.value);
+                  setBreed(event.target.value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="type"
+                label="Type"
+                name="type"
+                autoComplete="type"
+                value={type}
+                onChange={(event: any) => {
+                  setType(event.target.value);
                 }}
               />
             </Grid>
@@ -96,32 +104,17 @@ const SignUp = () => {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={email}
+                name="petSize"
+                label="Pet Size"
+                id="petSize"
+                autoComplete="petSize"
+                value={petSize}
                 onChange={(event: any) => {
-                  setEmail(event.target.value);
+                  setPetSize(event.target.value);
                 }}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(event: any) => {
-                  setPassword(event.target.value);
-                }}
-              />
-            </Grid>
+          
           </Grid>
           <Button
             type="submit"
@@ -130,18 +123,11 @@ const SignUp = () => {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Save Details
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/SignIn" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>
   );
 };
-export default SignUp;
+export default Pet;
